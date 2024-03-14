@@ -11,25 +11,17 @@ public class ArraysInt {
 	}
 	
 	public static int[] insertNumber(int[] array, int index, int number) {
-		int[] newArray = null;
-		if (index == array.length) { // add element to the end
-			newArray = addNumber(array, number);
-		} else {
-			newArray = new int[array.length + 1];
-			newArray[index] = number;
-			commonCopy(array, newArray, index, false);
-		}
+		int[] newArray = new int[array.length + 1];
+		System.arraycopy(array, 0, newArray, 0, index);
+		System.arraycopy(array, index, newArray, index + 1, array.length - index);
+		newArray[index] = number;
 		return newArray;
 	}
 	
 	public static int[] removeNumber(int[] array, int index) {
-		int[] newArray = null;
-		if (index == array.length - 1) { // remove last element
-			newArray = Arrays.copyOf(array, array.length - 1);
-		} else {
-			newArray = new int[array.length - 1];
-			commonCopy(array, newArray, index, true);
-		}
+		int[] newArray = new int[array.length - 1];
+		System.arraycopy(array, 0, newArray, 0, index);
+		System.arraycopy(array, index + 1, newArray, index, array.length - index - 1);
 		return newArray;
 	}
 	
@@ -40,16 +32,6 @@ public class ArraysInt {
 
 	private static int applyBitwiseComplementIfNegative(int value) {
 		return value < 0 ? (~ value) : value;
-	}
-
-	private static void commonCopy(int[] source, int[] target, int index, boolean isRemoveOperation) {
-		if (index != 0) {
-			System.arraycopy(source, 0, target, 0, index);
-		}
-		int sourceIndex = isRemoveOperation ? index + 1 : index;
-		int targetIndex = isRemoveOperation ? index : index + 1;
-		int elementsToCopy = isRemoveOperation ? source.length - index - 1 : source.length - index;
-		System.arraycopy(source, sourceIndex, target, targetIndex , elementsToCopy);
 	}
 
 }
